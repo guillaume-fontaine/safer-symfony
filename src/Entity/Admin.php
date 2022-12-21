@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use App\Repository\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
 #[ORM\Table(name: '`admin`')]
-class Admin implements UserInterface
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,6 +29,9 @@ class Admin implements UserInterface
 
     #[ORM\Column(length: 25)]
     private ?string $nom = null;
+
+    #[ORM\Column(length: 400)]
+    private ?string $passwords = null;
 
     public function getId(): ?int
     {
@@ -104,5 +110,22 @@ class Admin implements UserInterface
         $this->nom = $nom;
 
         return $this;
+    }
+
+    public function getPasswords(): ?string
+    {
+        return $this->passwords;
+    }
+
+    public function setPasswords(string $passwords): self
+    {
+        $this->passwords = $passwords;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->passwords;
     }
 }
