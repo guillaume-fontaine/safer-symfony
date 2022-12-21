@@ -125,6 +125,9 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/ux-twig-component": {
+        "version": "v2.6.1"
+    },
     "twig/extra-bundle": {
         "version": "v3.4.0"
     }
