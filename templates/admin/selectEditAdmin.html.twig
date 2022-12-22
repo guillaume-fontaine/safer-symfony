@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Séléctioner un administrateur à modifié{% endblock %}
+
+{% block body %}
+    <h1>Séléctioner un administrateur à modifié</h1>
+
+    {{ form_start(selectEditAdminForm) }}
+        {{ form_row(selectEditAdminForm.admin) }}
+        <button type="submit" class="btn">Suivant</button>
+    {{ form_end(selectEditAdminForm) }}
+{% endblock %}

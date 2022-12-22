@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification{% endblock %}
+
+{% block body %}
+    <h1>Modification d'admin</h1>
+
+    {{ form_start(editAdminForm) }}
+        {{ form_row(editAdminForm.prenom) }}
+        {{ form_row(editAdminForm.nom) }}
+        {{ form_row(editAdminForm.email) }}
+        {{ form_row(editAdminForm.plainPassword, {
+            label: 'Password'
+        }) }}
+
+        <button type="submit" class="btn">Register</button>
+    {{ form_end(editAdminForm) }}
+{% endblock %}

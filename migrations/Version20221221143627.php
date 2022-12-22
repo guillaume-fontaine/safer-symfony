@@ -29,7 +29,7 @@ final class Version20221221143627 extends AbstractMigration
         $this->addSql('ALTER TABLE biens ADD CONSTRAINT FK_1F9004DDBCF5E72D FOREIGN KEY (categorie_id) REFERENCES categories (id)');
         $this->addSql('ALTER TABLE favoriser ADD CONSTRAINT FK_962146E651E8871B FOREIGN KEY (favoris_id) REFERENCES favoris (id)');
         $this->addSql('ALTER TABLE favoriser ADD CONSTRAINT FK_962146E67773350C FOREIGN KEY (biens_id) REFERENCES biens (id)');
-        $this->addSql('INSERT INTO `admin` (`id`, `email`, `roles`, `prenom`, `nom`, `passwords`) VALUES (1, \'etudesupfg@gmail.com\', \'[\"ROLE_SUPER_ADMIN\"]\', \'Guillaume\', \'Fontaine\', \'$2y$13$wtQJOSnVscgm6u9tz5hUheOCyz1ksciq/30E0Npn5rMVuMjSHwjPi\')')
+        $this->addSql('INSERT INTO `admin` (`id`, `email`, `roles`, `prenom`, `nom`, `passwords`) VALUES (1, \'etudesupfg@gmail.com\', \'[\"ROLE_SUPER_ADMIN\"]\', \'Guillaume\', \'Fontaine\', \'$2y$13$wtQJOSnVscgm6u9tz5hUheOCyz1ksciq/30E0Npn5rMVuMjSHwjPi\')');
         //Password : LQBVDMhdE7U2yAi
     }
 

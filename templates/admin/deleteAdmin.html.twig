@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer un administrateur{% endblock %}
+
+{% block body %}
+    <h1>Supprimer un administrateur</h1>
+
+    {{ form_start(deleteAdminForm) }}
+        {{ form_row(deleteAdminForm.admin) }}
+        <button type="submit" class="btn">Supprimer</button>
+    {{ form_end(deleteAdminForm) }}
+{% endblock %}
