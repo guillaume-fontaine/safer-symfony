@@ -13,13 +13,12 @@ class HomepageController extends AbstractController
     public function index(): Response
     {
         $bien1 = ['intitule','cat','desc','prix','loca','surface'];
-        //$bien2 = RandomBien();
+        $bien2 = ['intitule','cat','desc','prix','loca','surface'];
         //$bien3 = RandomBien();
+        $biens = [$bien1, $bien2];
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
-            'first_good' => $bien1,
-            //'second_good' => $bien2,
-            //'third_good' => $bien3,
+            'biens' => $biens,
         ]);
     }
 

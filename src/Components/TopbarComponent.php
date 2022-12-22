@@ -1,11 +1,11 @@
 <?php
-// src/Components/SidebarComponent.php
+// src/Components/TopbarComponent.php
 namespace App\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('sidebar')]
-class SidebarComponent
+#[AsTwigComponent('topbar')]
+class TopbarComponent
 {
     public string $current = 'Homepage';
     public string $menu1 = 'Homepage';
