@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification{% endblock %}
+
+{% block body %}
+    <h1>Modification d'une catégorie</h1>
+
+    {{ form_start(editCategoriesForm) }}
+        {{ form_row(editCategoriesForm.categories) }}
+        {{ form_row(editCategoriesForm.editLibelle) }}
+        <button type="submit" class="btn">Modifier</button>
+    {{ form_end(editCategoriesForm) }}
+{% endblock %}

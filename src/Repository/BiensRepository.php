@@ -42,18 +42,7 @@ class BiensRepository extends ServiceEntityRepository
 
     //Cette fonction recupere 3 bien aleatoire via une requete SQL
     public function threeRandomGoods(){
-        $conn = $this->getEntityManager()->getConnection();
-
-        $sql = '
-            SELECT * FROM biens
-            ORDER BY RAND()
-            LIMIT 3
-            ';
-        $stmt = $conn->prepare($sql);
-        $resultSet = $stmt->executeQuery();
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAllAssociative();
+        return $this->createQueryBuilder('bien')->orderBy('RAND()')->setMaxResults(3)->getQuery()->getResult();
     }
 
 //    /**

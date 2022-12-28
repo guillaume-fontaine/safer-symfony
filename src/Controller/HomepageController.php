@@ -11,10 +11,11 @@ use Doctrine\Persistence\ManagerRegistry;
 class HomepageController extends AbstractController
 {
 
-    #[Route('/homepage', name: 'app_homepage')]
+    #[Route('/', name: 'app_homepage')]
     public function index(ManagerRegistry $doctrine): Response
     {
         $biens = $doctrine->getRepository(Biens::class)->threeRandomGoods();
+        
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
             'biens' => $biens,

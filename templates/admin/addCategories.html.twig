@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout{% endblock %}
+
+{% block body %}
+    <h1>Ajout d'une catégorie</h1>
+
+    {{ form_start(addCategoriesForm) }}
+        {{ form_row(addCategoriesForm.libelle) }}
+        <button type="submit" class="btn">Ajouter</button>
+    {{ form_end(addCategoriesForm) }}
+{% endblock %}
