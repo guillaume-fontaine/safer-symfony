@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un administrateur{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un administrateur</h1>
+
+    {{ form_start(addAdminForm) }}
+        {{ form_row(addAdminForm.prenom) }}
+        {{ form_row(addAdminForm.nom) }}
+        {{ form_row(addAdminForm.email) }}
+        {{ form_row(addAdminForm.plainPassword) }}
+
+        <button type="submit" class="btn">Ajouter</button>
+    {{ form_end(addAdminForm) }}
+{% endblock %}

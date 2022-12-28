@@ -7,9 +7,10 @@ use App\Entity\Admin;
 use App\Entity\Categories;
 use App\Form\DeleteAdminType;
 use App\Form\SelectionModificationAdminType;
-use App\Form\ModificationAdminType;
-use App\Form\ModificationCategoriesType;
+use App\Form\EditAdminType;
+use App\Form\EditCategoriesType;
 use App\Form\AddCategoriesType;
+use App\Form\AddAdminFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,8 @@ class AdminController extends AbstractController
             $user = $form->get('admin')->getData();
             $entityManager->remove($user);
             $entityManager->flush();
+
+            $this->addFlash('success', 'L\'administrateur '.$user->getNom().' '.$user->getPrenom().' a été supprimé.');
 
             return $this->redirectToRoute('app_admin');
         }
@@ -71,7 +74,7 @@ class AdminController extends AbstractController
     {
 
 
-        $form = $this->createForm(ModificationAdminType::class, $user);
+        $form = $this->createForm(EditAdminType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,6 +89,8 @@ class AdminController extends AbstractController
 
             $entityManager->flush();
 
+            $this->addFlash('success', 'L\'administrateur '.$user->getNom().' '.$user->getPrenom().' a été modifié.');
+
             return $this->redirectToRoute('app_admin');
         }
 
@@ -97,7 +102,7 @@ class AdminController extends AbstractController
     #[Route('/admin/gestionCategories/modification', name: 'app_modifier_categories')]
     public function modificationCategories(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ModificationCategoriesType::class, new Categories());
+        $form = $this->createForm(EditCategoriesType::class, new Categories());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -147,6 +152,36 @@ class AdminController extends AbstractController
 
         return $this->render('admin/addCategories.html.twig', [
             'addCategoriesForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/admin/gestionAdmin/ajout', name: 'app_register')]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = new Admin();
+        $form = $this->createForm(AddAdminFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPasswords(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $user->setRoles(array('ROLE_ADMIN'));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'L\'administrateur '.$user->getNom().' '.$user->getPrenom().' a été inscrit.');
+
+            return $this->redirectToRoute('app_admin');
+        }
+
+        return $this->render('admin/addAdmin.html.twig', [
+            'addAdminForm' => $form->createView(),
         ]);
     }
 
