@@ -1,0 +1,14 @@
+<div class="header">
+    <!-- askip d'apres w3s c'est pour les mobiles ? -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{boostrapCDN}}">
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{jQuerylibrary}}"></script>
+        <script src="{{lastestCompiledJS}}"></script>
+    {% endblock %}
+    {{ component('topbar') }}    
+</div>

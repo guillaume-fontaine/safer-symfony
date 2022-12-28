@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Biens;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM;
 
 /**
  * @extends ServiceEntityRepository<Biens>
@@ -37,6 +38,22 @@ class BiensRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    //Cette fonction recupere 3 bien aleatoire via une requete SQL
+    public function threeRandomGoods(){
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT * FROM biens
+            ORDER BY RAND()
+            LIMIT 3
+            ';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
     }
 
 //    /**
