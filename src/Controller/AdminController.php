@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Admin;
+use App\Entity\Categories;
 use App\Form\DeleteAdminType;
 use App\Form\SelectionModificationAdminType;
 use App\Form\ModificationAdminType;
+use App\Form\ModificationCategoriesType;
+use App\Form\AddCategoriesType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +58,7 @@ class AdminController extends AbstractController
 
             $user = $form->get('admin')->getData();
 
-            return $this->redirectToRoute('app_modifier_admin', ['id' => $user->getId()]);;
+            return $this->redirectToRoute('app_modifier_admin', ['id' => $user->getId()]);
         }
 
         return $this->render('admin/selectEditAdmin.html.twig', [
@@ -90,4 +93,61 @@ class AdminController extends AbstractController
             'editAdminForm' => $form->createView(),
         ]);
     }
+    
+    #[Route('/admin/gestionCategories/modification', name: 'app_modifier_categories')]
+    public function modificationCategories(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ModificationCategoriesType::class, new Categories());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $categories = $entityManager->getRepository(Categories::class)->find($form->get('categories')->getData()->getId());
+
+            if (!$categories) {
+                throw $this->createNotFoundException(
+                    'Aucune catégorie trouvée pour l\'id : '.$id
+                );
+            }
+
+            $oldLibelle = $categories->getLibelle();
+            $newLibelle = $form->get('editLibelle')->getData();
+
+            $categories->setLibelle($newLibelle);
+
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'La catégorie '.$oldLibelle.' est devenue '.$newLibelle);
+
+
+            return $this->redirectToRoute('app_admin');
+        }
+
+        return $this->render('admin/editCategories.html.twig', [
+            'editCategoriesForm' => $form->createView(),
+        ]);
+    }
+    
+    #[Route('/admin/gestionCategories/ajout', name: 'app_add_categories')]
+    public function addCategories(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $categories = new Categories();
+        $form = $this->createForm(AddCategoriesType::class, $categories);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'La catégorie '.$form->get('libelle')->getData().' ajouté');
+
+
+            return $this->redirectToRoute('app_admin');
+        }
+
+        return $this->render('admin/addCategories.html.twig', [
+            'addCategoriesForm' => $form->createView(),
+        ]);
+    }
+
 }
