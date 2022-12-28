@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block header %} 
+    {{component('header')}} 
+{% endblock %}
+
+{% block title %}Safer{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="page-header">
+    </br> <!-- due a la topbar, A revenir dessus si temps = ok-->
+    <h1>Bienvenue chez Safer</h1>
+</div>
+
+{% for bien in biens %}
+    <div class="container">
+        <div class="jumbotron">
+            <div class="table-responsive"> <!--Little screen ?-->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" colspan="3">{{bien['intitule']}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class = "align-items-center">
+                            <td class="text-center">{{bien['type']}}</td>
+                            <td colspan=2 style="width : 66%"><img src="{{asset("/image/#{bien['reference']}.jpg")}}" class="img-responsive" alt="Image indisponible"></td>
+                        <tr>
+                        <tr>
+                            <td class="text-center">
+                                {% if bien['categorie_id'] == 1 %}
+                                    Terrain agricole
+                                {% elseif bien['categorie_id'] == 2 %}
+                                    Batiments
+                                {% elseif bien['categorie_id'] == 3 %}
+                                    Bois
+                                {% elseif bien['categorie_id'] == 4 %}
+                                    Prairie
+                                {% else %}
+                                    Exploitation
+                                {% endif %}
+                            </td>
+                            <td colspan="2" class="text-justify">{{bien['descriptif']}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">Localisation : {{bien['localisation']}}</td>
+                            <td class="text-center">
+                                {% if bien['prix'] < 0 %}
+                                Prix indisponible pour le moment
+                                {% else %}
+                                {{bien['prix']}}€
+                                {% endif %}
+                            </td>
+                            <td class="text-center">{{bien['surface']}} ha</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}
