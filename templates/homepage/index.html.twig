@@ -28,17 +28,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr class = "align-items-center">
                             <td class="text-center">{{bien['type']}}</td>
-                            <td colspan=2 style="width : 66%"><img src="/assets/{{bien['reference']}}.jpg"></td>
+                            <td colspan=2 style="width : 66%"><img src="{{asset("/image/#{bien['reference']}.jpg")}}" class="img-responsive" alt="Image indisponible"></td>
                         <tr>
                         <tr>
-                            <td class="text-center"> categorie_id {{bien['categorie_id']}}</td>
+                            <td class="text-center">
+                                {% if bien['categorie_id'] == 1 %}
+                                    Terrain agricole
+                                {% elseif bien['categorie_id'] == 2 %}
+                                    Batiments
+                                {% elseif bien['categorie_id'] == 3 %}
+                                    Bois
+                                {% elseif bien['categorie_id'] == 4 %}
+                                    Prairie
+                                {% else %}
+                                    Exploitation
+                                {% endif %}
+                            </td>
                             <td colspan="2" class="text-justify">{{bien['descriptif']}}</td>
                         </tr>
                         <tr>
-                            <td class="text-center">{{bien['prix']}}</td>
-                            <td class="text-center">{{bien['localisation']}}</td>
+                            <td class="text-center">Localisation : {{bien['localisation']}}</td>
+                            <td class="text-center">
+                                {% if bien['prix'] < 0 %}
+                                Prix indisponible pour le moment
+                                {% else %}
+                                {{bien['prix']}}€
+                                {% endif %}
+                            </td>
                             <td class="text-center">{{bien['surface']}} ha</td>
                         </tr>
                     </tbody>

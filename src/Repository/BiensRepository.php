@@ -40,35 +40,8 @@ class BiensRepository extends ServiceEntityRepository
         }
     }
 
-    //Cette fonction renvoie entre 0 et 3 biens aleatoire
-    //Elle passe par une native query car le query builder n'inclus pas de rand
-    public function randomZerotoThreeBiens() : array
-    {
-        # set entity name
-        $table = $this->getClassMetadata()->getTableName();
-
-        $rsm = new ORM\Query\ResultSetMapping();
-        $rsm->addEntityResult($this->getEntityName(), 'biens');
-        $rsm->addFieldResult('biens', 'intitule', 'intitule');
-        $rsm->addFieldResult('biens', 'categorie', 'categorie');
-        $rsm->addFieldResult('biens', 'descriptif', 'descriptif');
-        $rsm->addFieldResult('biens', 'prix', 'prix');
-        $rsm->addFieldResult('biens', 'localisation', 'localisation');
-        $rsm->addFieldResult('biens', 'surface', 'surface');
-        $rsm->addFieldResult('biens', 'reference', 'reference');
-
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createNativeQuery(
-            "SELECT intitule, categorie_id, descriptif, prix, localisation, surface, reference
-            FROM biens
-            ORDER BY RAND()
-            LIMIT 3", $rsm
-        );
-        return $query->getResult();
-    }
-
-    public function qsqldocusymfony(){
+    //Cette fonction recupere 3 bien aleatoire via une requete SQL
+    public function threeRandomGoods(){
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
