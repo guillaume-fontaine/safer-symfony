@@ -19,3 +19,4 @@ class Rand extends \Doctrine\ORM\Query\AST\Functions\FunctionNode
         return 'RAND()';
     }
 }
+//https://stackoverflow.com/questions/10762538/how-to-select-randomly-with-doctrine

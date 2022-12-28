@@ -15,6 +15,7 @@ class HomepageController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $biens = $doctrine->getRepository(Biens::class)->threeRandomGoods();
+        
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
             'biens' => $biens,
