@@ -7,8 +7,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent('header')]
 class HeaderComponent
 {
-    public string $boostrapCDN = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css';
-    public string $jQuerylibrary = 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js';
-    public string $lastestCompiledJS = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'; 
+    public string $boostrapCDN = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css';
+    public string $lastestCompiledJS = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js'; 
    
 }
