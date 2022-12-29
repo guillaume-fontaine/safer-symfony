@@ -12,41 +12,36 @@
 </div>
 
 
-    <div class="container">
-        <div class="jumbotron">
+    <div class="container text-center">
+        <div class="row align-items-start">
         {% for bien in biens %}
-            <div class="table-responsive"> <!--Little screen ?-->
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th class="text-center" colspan="3">{{bien.intitule}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class = "align-items-center">
-                            <td class="text-center">{{bien.type}}</td>
-                            <td colspan=2 style="width : 66%"><img src="{{asset("/image/#{bien.reference}.jpg")}}" class="img-responsive" alt="Image indisponible"></td>
-                        <tr>
-                        <tr>
-                            <td class="text-center">                        
-                                {{bien.categorie.libelle}}
-                            </td>
-                            <td colspan="2" class="text-justify">{{bien.descriptif}}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">Localisation : {{bien.localisation}}</td>
-                            <td class="text-center">
-                                {% if bien.prix < 0 %}
-                                Prix indisponible pour le moment
-                                {% else %}
-                                {{bien.prix}}€
-                                {% endif %}
-                            </td>
-                            <td class="text-center">{{bien.surface}} ha</td>
-                        </tr>
-                    </tbody>
-                </table>
+        
+        <div class="col">
+            <div class="card" >
+                <div class="card-header">
+                    {{bien.intitule}}
+                </div>
+                <img src="{{image_if("/image/#{bien.reference}.jpg")}}" class="card-img" alt="...">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{bien.type}}</li>
+                        <li class="list-group-item">Catégorie : {{bien.categorie.libelle}}</li>
+                        <li class="list-group-item">Localisation : {{bien.localisation}}</li>
+                        <li class="list-group-item">Surface : {{bien.surface}} ha</li>
+                        <li class="list-group-item">
+                        {% if bien.prix < 0 %}
+                        Prix indisponible pour le moment
+                        {% else %}
+                        Prix : {{bien.prix}}€
+                        {% endif %}
+                        </li>
+                    </ul>
+                    <br>
+                    <p class="font-weight-bold"> Description : </p>
+                    <p>{{bien.descriptif}}</p>
+                </div>
             </div>
+        </div>
         {% endfor %}
         </div>
     </div>
