@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Biens{% endblock %}
+
+{% block body %}
+{{ component('topbar') }} 
+<div class="page-header">
+    </br> <!-- due a la topbar, A revenir dessus si temps = ok-->
+    <h1 class="text-center">Categorie : {{categorie.libelle}}</h1>
+</div>
+    <div class="container">
+        <div class="jumbotron">
+        {% for bien in biens %}
+            <div class="table-responsive"> <!--Little screen ?-->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" colspan="3">{{bien.intitule}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class = "align-items-center">
+                            <td class="text-center">{{bien.type}}</td>
+                            <td colspan=2 style="width : 66%"><img src="{{asset("/image/#{bien.reference}.jpg")}}" class="img-responsive" alt="Image indisponible"></td>
+                        <tr>
+                        <tr>
+                            <td class="text-center">                        
+                                {{bien.categorie.libelle}}
+                            </td>
+                            <td colspan="2" class="text-justify">{{bien.descriptif}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">Localisation : {{bien.localisation}}</td>
+                            <td class="text-center">
+                                {% if bien.prix < 0 %}
+                                Prix indisponible pour le moment
+                                {% else %}
+                                {{bien.prix}}€
+                                {% endif %}
+                            </td>
+                            <td class="text-center">{{bien.surface}} ha</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

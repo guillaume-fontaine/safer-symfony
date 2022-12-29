@@ -45,6 +45,15 @@ class BiensRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('bien')->orderBy('RAND()')->setMaxResults(3)->getQuery()->getResult();
     }
 
+    public function allGoodsfromCategorie($id)
+    {
+        return $this->createQueryBuilder('bien')
+                    ->where('bien.categorie = :id') //not sure on this one
+                    ->setParameter('id', $id)
+                    ->orderBy('bien.prix','ASC')
+                    ->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Biens[] Returns an array of Biens objects
 //     */
