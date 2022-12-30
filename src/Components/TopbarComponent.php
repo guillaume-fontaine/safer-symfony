@@ -16,7 +16,7 @@ class TopbarComponent
         $this->categoriesRepository = $categoriesRepository;
     }
 
-    public function getAll()
+    public function getAllCategorie()
     {
         return $this->categoriesRepository->findAll();
     }

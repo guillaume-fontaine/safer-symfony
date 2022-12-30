@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Safer</a>
+    <a class="navbar-brand" href="/">Safer</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,12 +16,9 @@
             Catégorie
           </a>
           <ul class="dropdown-menu">
-          {# TODO Catégorie
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          #}
+          {% for categorie in this.AllCategorie %}
+            <li><a class="dropdown-item" href="{{"./categorie?id=#{categorie.id}"}}">{{categorie.libelle}}</a></li>
+          {% endfor %}
           </ul>
         </li>
       </ul>
@@ -32,25 +29,3 @@
     </div>
   </div>
 </nav>
-{# OLD
-<div class="topbar"> <!-- id = css pour sidebar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">SAFER</a>
-        </div>
-            <ul class="nav navbar-nav"><!-- data-hover rend le menu clicable-->
-            <li><a "dropdown-toggle" data-toggle="dropdown" href="./biens">Tout les biens<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    {% for categorie in this.All %}
-                        <li><a href={{"./categorie?id=#{categorie.id}"}}>{{categorie.libelle}}</a></li>
-                    {% endfor %}
-                </ul>
-            </li>
-            <li><a href="./recherche">Chercher un bien</a></li>
-            <li><a href="./contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-</div>
-#}
