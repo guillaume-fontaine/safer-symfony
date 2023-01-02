@@ -1,0 +1,14 @@
+{% extends 'homepage/index.html.twig' %}
+
+{% block hompagebody %}
+	<div class="container text-center">
+	
+        {% if biens is empty %}
+			Bijour vous n'avez aucun favoris
+		{% else %}	
+			{% for bien in biens %}
+				{{ component('biens_favoris', { bien : bien}) }}
+			{% endfor %}
+		{% endif %}
+	</div>
+{% endblock %}

@@ -1,60 +1,37 @@
 {# templates/components/top.html.twig #}
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Safer</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Les biens</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Catégorie
-          </a>
-          <ul class="dropdown-menu">
-          {# TODO Catégorie
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          #}
-          </ul>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{{saferUrl}}">Safer</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Les biens</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Catégorie
+					</a>
+					<ul
+						class="dropdown-menu">{# TODO Catégorie
+							<li><a class="dropdown-item" href="#">Action</a></li>
+							<li><a class="dropdown-item" href="#">Another action</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li><a class="dropdown-item" href="#">Something else here</a></li>
+							#}
+					</ul>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{favorisUrl}}">Vos favoris</a>
+				</li>
+			</ul>
+			<form class="d-flex" role="search">
+				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success" type="submit">Search</button>
+			</form>
+		</div>
+	</div>
 </nav>
-{# OLD
-<div class="topbar"> <!-- id = css pour sidebar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="./homepage">SAFER</a>
-        </div>
-            <ul class="nav navbar-nav">
-            {% if current == 'Biens' %}
-                <li><a href="./biens">TOUT LES BIENS</a></li>
-                <li><a href="./recherche">Chercher un bien</a></li>
-                <li><a href="./contact">Contact</a></li>
-            {% elseif current == 'ChercherBiens' %}
-                <li><a href="./biens">Tout les biens</a></li>
-                <li><a href="./recherche">CHERCHER UN BIEN</a></li>
-                <li><a href="./contact">Contact</a></li>
-            {% else %}
-                <li><a href="./biens">Tout les biens</a></li>
-                <li><a href="./recherche">Chercher un bien</a></li>
-                <li><a href="./contact">CONTACT</a></li>
-            {% endif %}
-            </ul>
-        </div>
-    </nav>
-</div>
-#}
