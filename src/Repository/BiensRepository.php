@@ -48,11 +48,26 @@ class BiensRepository extends ServiceEntityRepository
     public function allGoodsfromCategorie($id)
     {
         return $this->createQueryBuilder('bien')
-                    ->where('bien.categorie = :id') //not sure on this one
+                    ->where('bien.categorie = :id')
                     ->setParameter('id', $id)
                     ->orderBy('bien.prix','ASC')
                     ->getQuery()->getResult();
     }
+
+    /* la partie formdata keyword doit etre une string avec % and % entre les mot clefs
+    */
+    public function goodsfromIdandForm($id, $formData){
+        
+        return $this->createQueryBuilder('bien')
+                    ->where('bien.categorie = :id')
+                    ->setParameter('id', $id)
+                    ->andwhere('bien.intitule LIKE :keyword')
+                    ->orwhere('bien.descriptif LIKE :keyword')
+                    ->setParameter('keyword', '%'.$formData['mot_clef'].'%')
+                    ->orderBy('bien.prix','ASC')
+                    ->getQuery()->getResult();
+    }
+
 
 //    /**
 //     * @return Biens[] Returns an array of Biens objects
