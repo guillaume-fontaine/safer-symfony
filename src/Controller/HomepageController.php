@@ -13,6 +13,7 @@ use App\Repository\BiensRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class HomepageController extends AbstractController
 {
@@ -48,11 +49,11 @@ class HomepageController extends AbstractController
         //Comme le form n'est pas mappe, il est ici pour le moment. Si tu veux le deplacer dans un FormType why not
         //, c'est juste que la doc ici le placait dans le controller : https://symfony.com/doc/current/form/without_class.html
         $form = $this->createFormBuilder() 
-        ->add('prix_min', TextType::class, ['required' => false])//aurait ete non mappe
-        ->add('prix_max', TextType::class, ['required' => false])//aurait ete non mappe
+        ->add('prix_min', NumberType::class, ['required' => false])//aurait ete non mappe
+        ->add('prix_max', NumberType::class, ['required' => false])//aurait ete non mappe
         ->add('localisation', TextType::class, ['required' => false])//aurait ete mappe
-        ->add('mot_clef', TextType::class) //aurait ete non mappe, normalement c'est motclefS mais il faudrait gerer le querybuilder avec les where
-        ->add('search', SubmitType::class)
+        ->add('mot_clefs', TextType::class, ['required' => false]) //aurait ete non mappe, normalement c'est motclefS mais il faudrait gerer le querybuilder avec les where
+        ->add('RECHERCHER', SubmitType::class)
         ->getForm();
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){

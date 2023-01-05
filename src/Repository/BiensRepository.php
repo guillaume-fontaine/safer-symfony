@@ -57,15 +57,30 @@ class BiensRepository extends ServiceEntityRepository
     /* la partie formdata keyword doit etre une string avec % and % entre les mot clefs
     */
     public function goodsfromIdandForm($id, $formData){
-        
-        return $this->createQueryBuilder('bien')
-                    ->where('bien.categorie = :id')
-                    ->setParameter('id', $id)
-                    ->andwhere('bien.intitule LIKE :keyword')
+        $query = $this->createQueryBuilder('bien')
+                ->where('bien.categorie = :id')
+                ->setParameter('id', $id);
+        if(!is_null($formData['mot_clefs'])){
+//me demande pas pk isEmpty ne fonctionnait pas, je n'en sais rien
+//(mais je pense que le probleme a lieu entre la chaise et le clavier)
+            $query  ->andwhere('bien.intitule LIKE :keyword')
                     ->orwhere('bien.descriptif LIKE :keyword')
-                    ->setParameter('keyword', '%'.$formData['mot_clef'].'%')
-                    ->orderBy('bien.prix','ASC')
-                    ->getQuery()->getResult();
+                    ->setParameter('keyword', '%'.$formData['mot_clefs'].'%');
+        }
+        if(!is_null($formData['prix_min'])){
+            $query  ->andwhere('bien.prix >= :pmin')
+                    ->setParameter('pmin', $formData['prix_min']);
+        }
+        if(!is_null($formData['prix_max']) && $formData['prix_max'] > $formData['prix_min']){
+            $query  ->andwhere('bien.prix <= :pmax')
+                    ->setParameter('pmax', $formData['prix_max']);
+        }
+        if(!is_null($formData['localisation'])){
+            $query  ->andwhere('bien.localisation = :localisation')
+                    ->setParameter('localisation', $formData['localisation']);
+        }
+
+        return $query ->orderBy('bien.prix','ASC') ->getQuery()->getResult();
     }
 
 
