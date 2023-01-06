@@ -48,11 +48,53 @@ class BiensRepository extends ServiceEntityRepository
     public function allGoodsfromCategorie($id)
     {
         return $this->createQueryBuilder('bien')
-                    ->where('bien.categorie = :id') //not sure on this one
+                    ->where('bien.categorie = :id')
                     ->setParameter('id', $id)
                     ->orderBy('bien.prix','ASC')
                     ->getQuery()->getResult();
     }
+
+    /* la partie formdata keyword doit etre une string avec "% and % entre les mot clefs
+    */
+    public function goodsfromIdandForm($id, $formData){
+        $query = $this->createQueryBuilder('bien')
+                ->where('bien.categorie = :id')
+                ->setParameter('id', $id);
+        if(!is_null($formData['mot_clefs'])){
+//me demande pas pk isEmpty ne fonctionnait pas, je n'en sais rien
+//(mais je pense que le probleme a lieu entre la chaise et le clavier)
+            $count = 0;
+            foreach(explode(" ",$formData['mot_clefs']) as $clef){
+                if($count==0){
+                    $query  ->andwhere('bien.intitule LIKE :mclef')
+                            ->orwhere('bien.descriptif LIKE :mclef')
+                            ->setParameter('mclef', '%'.$clef.'%');
+                    $count++;
+                }
+                else {
+                    $query  ->orwhere('bien.intitule LIKE :mclef'.$count)
+                            ->orwhere('bien.descriptif LIKE :mclef'.$count)
+                            ->setParameter('mclef'.$count, '%'.$clef.'%');
+                    $count++;
+                }
+            }
+        }
+        if(!is_null($formData['prix_min'])){
+            $query  ->andwhere('bien.prix >= :pmin')
+                    ->setParameter('pmin', $formData['prix_min']);
+        }
+        if(!is_null($formData['prix_max']) && $formData['prix_max'] > $formData['prix_min']){
+            $query  ->andwhere('bien.prix <= :pmax')
+                    ->setParameter('pmax', $formData['prix_max']);
+        }
+        if(!is_null($formData['localisation'])){
+            $query  ->andwhere('bien.localisation = :localisation')
+                    ->setParameter('localisation', $formData['localisation']);
+        }
+        //dd($query);
+        return $query ->orderBy('bien.prix','ASC') ->getQuery()->getResult();
+    }
+
 
 //    /**
 //     * @return Biens[] Returns an array of Biens objects
