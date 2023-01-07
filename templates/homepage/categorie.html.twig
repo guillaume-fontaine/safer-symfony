@@ -1,25 +1,26 @@
-{% extends 'homepage/index.html.twig' %}
+{% extends 'homepage/splitView.html.twig' %}
 
-{% block title %}Biens{% endblock %}
-
-{% block body %}
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
-                {{ form_start(form) }}
-                    <div class="form-group">
-                        {{ form_label(form.prix_min, 'Prix minimum') }}
-                        {{ form_widget(form.prix_min, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_label(form.prix_max, 'Prix maximum') }}
-                        {{ form_widget(form.prix_max, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_label(form.localisation, 'Localisation') }}
-                        {{ form_widget(form.localisation, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_label(form.mot_clefs, 'Mots-clés') }}
-                        {{ form_widget(form.mot_clefs, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-                {{ form_end(form) }}
-            </div>
-
-        {% for bien in biens %}
-            {{ component('biens_favoris', { bien : bien, favoris : favoris, routeRedirection : routeRedirection, isLinkImage : true}) }}
-        {% endfor %}
+{% block leftView %}
+	{% for bien in biens %}
+		{{ component('biens_favoris', { bien : bien, favoris : favoris, routeRedirection : routeRedirection, isLinkImage : true}) }}
+	{% endfor %}
+{% endblock %}
+{% block rightView %}
+	<div class="sticky-top" style="top : 70px;">
+		<div class="card">
+			<h5 class="card-title">
+				Rechercher un biens avec des filtres
+			</h5>
+			<div class="card-body">
+				{{ form_start(form) }}
+				{{ form_row(form.prix_min) }}
+				{{ form_row(form.prix_max) }}
+				{{ form_row(form.localisation) }}
+				{{ form_row(form.mot_clefs) }}
+				<button type="submit" class="btn btn-primary">Rechercher</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

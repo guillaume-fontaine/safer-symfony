@@ -167,13 +167,12 @@ class HomepageController extends AbstractController
         ->add('prix_min', NumberType::class, ['required' => false])//aurait ete non mappe
         ->add('prix_max', NumberType::class, ['required' => false])//aurait ete non mappe
         ->add('localisation', TextType::class, ['required' => false])//aurait ete mappe
-        ->add('mot_clefs', TextType::class, ['required' => false]) //aurait ete non mappe, normalement c'est motclefS mais il faudrait gerer le querybuilder avec les where
-        ->add('RECHERCHER', SubmitType::class)
+        ->add('mot_clefs', TextType::class, ['required' => false])
         ->getForm();
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $formdata = $form->getData(); //Renvoie un tableau ! A savoir que avec un objet le get data n'aurait pas renvoye les morceau du form non mappe et aurait du etre recuperer individuellement
-            $biens = $doctrine->getRepository(Biens::class)->goodsfromIdandForm($id,$formdata);
+            $biens = $doctrine->getRepository(Biens::class)->goodsfromIdandForm($categorie->getId(),$formdata);
         }
 
         return $this->render('homepage/categorie.html.twig', [

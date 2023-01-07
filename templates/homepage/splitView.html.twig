@@ -1,0 +1,12 @@
+{% extends 'homepage/index.html.twig' %}
+
+{% block body %}
+	{% if biens is empty %}
+		Bijour vous n'avez aucun favoris
+	{% else %}
+		<div class="row">
+			<div class="col-sm-8"> {% block leftView %}{% endblock %}</div>
+			<div class="col-sm-4"> {% block rightView %}{% endblock %}</div>
+        </div>
+    {% endif %}
+{% endblock %}

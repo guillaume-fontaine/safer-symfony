@@ -1,16 +1,11 @@
-{% extends 'homepage/index.html.twig' %}
+{% extends 'homepage/splitView.html.twig' %}
 
-{% block body %}
-	{% if biens is empty %}
-		Bijour vous n'avez aucun favoris
-	{% else %}
-		<div class="row">
-			<div class="col-sm-8">
+{% block leftView %}
 				{% for bien in biens %}
 					{{ component('biens_favoris', { bien : bien, favoris : true, routeRedirection : routeRedirection, isLinkImage : true}) }}
-				{% endfor %}
-			</div>
-			<div class="col-sm-4">
+				{% endfor %}                
+{% endblock %}
+{% block rightView %}
 				<div class="sticky-top" style="top : 70px;">
 					<div class="card">
 						<h5 class="card-title">
@@ -24,7 +19,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	{% endif %}
+                
 {% endblock %}
+
