@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin/biens')]
+#[Route('/admin/biens')] //La route a été changé pour la passer en "back end" Tout ce code a été généré par bin/console make:crud Biens
 class BiensController extends AbstractController
 {
     #[Route('/', name: 'app_biens_index', methods: ['GET'])]
