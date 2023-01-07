@@ -1,9 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/form.html.twig' %}
 
-{% block title %}Ajout{% endblock %}
-
-{% block body %}
-    <h1>Ajout d'une catégorie</h1>
+{% block form %}
 
     {{ form_start(addCategoriesForm) }}
         {{ form_row(addCategoriesForm.libelle) }}

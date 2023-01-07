@@ -2,21 +2,25 @@
 
 namespace App\Form;
 
+use App\Entity\Favoris;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
-class FavoriserType extends AbstractType
+class AddFavorisType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        
+        $builder
+            ->add('mail', EmailType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data_class' => Favoris::class,
         ]);
     }
 }

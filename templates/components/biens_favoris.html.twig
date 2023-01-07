@@ -1,7 +1,20 @@
+<style>
+	.vcenter {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
 <div class="card mb-3">
 	<div class="row g-0">
-		<div class="col-md-4 bg-secondary-subtle d-inline-flex justify-content-center">
-			<img src="{{image_if("/image/#{bien.reference}.jpg")}}" class="img-fluid rounded" alt="...">
+		<div class="col-md-4 bg-secondary-subtle vcenter">
+			{% if isLinkImage %}
+				<a href="{{path('app_view_bien', {id: bien.id})}}" class="">
+					<img src="{{image_if("/image/#{bien.reference}.jpg")}}" class="img-fluid rounded" alt="...">
+				</a>
+			{% else %}
+				<img src="{{image_if("/image/#{bien.reference}.jpg")}}" class="img-fluid rounded" alt="...">
+			{% endif %}
 		</div>
 		<div class="col-md-8">
 			<div class="card-body">
@@ -30,7 +43,14 @@
 						<p>{{bien.descriptif}}</p>
 					</li>
 				</ul>
-				<a href="{{delete_url}}" role="button" class="btn btn-danger">Retirer des favoris</a>
+				{% if isLinkImage %}
+					<a href="{{ path('app_view_bien', {id: bien.id}) }}" class="btn btn-primary">Voir le bien</a>			
+				{% endif %}	
+				{% if is_favoris %}
+					<a href="{{delete_url}}" role="button" class="btn btn-danger">Retirer des favoris</a>
+				{% else %}
+					<a href="{{add_url}}" role="button" class="btn btn-warning">Ajouter aux favoris</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>

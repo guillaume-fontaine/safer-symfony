@@ -39,6 +39,16 @@ class FavoriserRepository extends ServiceEntityRepository
         }
     }
 
+    public function getFavoriserByFavoris($value): array
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.favoris = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Favoriser[] Returns an array of Favoriser objects
 //     */

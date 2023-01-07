@@ -2,9 +2,8 @@
 
 {% block form %}
 
-
-    {{ form_start(deleteAdminForm) }}
-        {{ form_row(deleteAdminForm.admin) }}
+    {{ form_start(deleteFavorisForm) }}
+        {{ form_row(deleteFavorisForm.favoris) }}
         <button type="submit" class="btn">Supprimer</button>
-    {{ form_end(deleteAdminForm) }}
+    {{ form_end(deleteFavorisForm) }}
 {% endblock %}
