@@ -2,20 +2,23 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Favoris;
 use App\Entity\Admin;
 use App\Entity\Categories;
+use App\Entity\Favoriser;
 use App\Form\DeleteAdminType;
-use App\Form\SelectionModificationAdminType;
+use App\Form\DeleteFavorisType;
+use App\Form\SelectAdminType;
 use App\Form\EditAdminType;
 use App\Form\EditCategoriesType;
 use App\Form\AddCategoriesType;
-use App\Form\AddAdminFormType;
+use App\Form\AddAdminType;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -47,6 +50,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/deleteAdmin.html.twig', [
             'deleteAdminForm' => $form->createView(),
+            'title' => "Supprimer un admin"
         ]);
     }
 
@@ -54,7 +58,7 @@ class AdminController extends AbstractController
     #[Route('/admin/gestionAdmin/modification', name: 'app_selectioner_modifier_admin')]
     public function selectionModificationAdmin(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(SelectionModificationAdminType::class, new Admin());
+        $form = $this->createForm(SelectAdminType::class, new Admin());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,6 +70,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/selectEditAdmin.html.twig', [
             'selectEditAdminForm' => $form->createView(),
+            'title' => "Modifier un admin"
         ]);
     }
 
@@ -96,6 +101,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/editAdmin.html.twig', [
             'editAdminForm' => $form->createView(),
+            'title' => "Sélectionner un admin à modifié"
         ]);
     }
     
@@ -108,12 +114,6 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $categories = $entityManager->getRepository(Categories::class)->find($form->get('categories')->getData()->getId());
-
-            if (!$categories) {
-                throw $this->createNotFoundException(
-                    'Aucune catégorie trouvée pour l\'id : '.$id
-                );
-            }
 
             $oldLibelle = $categories->getLibelle();
             $newLibelle = $form->get('editLibelle')->getData();
@@ -130,6 +130,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/editCategories.html.twig', [
             'editCategoriesForm' => $form->createView(),
+            'title' => "Modifier une catégorie"
         ]);
     }
     
@@ -152,14 +153,15 @@ class AdminController extends AbstractController
 
         return $this->render('admin/addCategories.html.twig', [
             'addCategoriesForm' => $form->createView(),
+            'title' => "Ajouter une catégorie"
         ]);
     }
 
-    #[Route('/admin/gestionAdmin/ajout', name: 'app_register')]
+    #[Route('/admin/gestionAdmin/ajout', name: 'app_add_admin')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Admin();
-        $form = $this->createForm(AddAdminFormType::class, $user);
+        $form = $this->createForm(AddAdminType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -182,6 +184,33 @@ class AdminController extends AbstractController
 
         return $this->render('admin/addAdmin.html.twig', [
             'addAdminForm' => $form->createView(),
+            'title' => "Ajouter un admin"
+        ]);
+    }
+
+    #[Route('/admin/gestionFavoris/suppression', name: 'app_delete_favoris')]
+    public function suppressionFavoris(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(DeleteFavorisType::class, new Favoris());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $favoris = $form->get('favoris')->getData();
+            foreach ($doctrine->getRepository(Favoriser::class)->getFavoriserByFavoris($favoris->getId()) as $bienFavoris) {
+                $entityManager->remove($bienFavoris);
+            }
+            $entityManager->remove($favoris);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le favoris a été supprimé.');
+
+            return $this->redirectToRoute('app_admin');
+        }
+
+        return $this->render('admin/deleteFavoris.html.twig', [
+            'deleteFavorisForm' => $form->createView(),
+            'title' => "Supprimer un favoris"
         ]);
     }
 

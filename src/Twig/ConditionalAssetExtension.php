@@ -8,12 +8,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ConditionalAssetExtension extends AbstractExtension {
 
-    protected $parameterBag;
 
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(protected ParameterBagInterface $parameterBag)
     {
-        $this->parameterBag = $parameterBag;
-
     }
 
     public function getFunctions()

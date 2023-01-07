@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    {% block header %}
-        {{component('header')}} <!-- A ete rajoute pour rajouter bootstrap a toutes nos template twig-->
-    {% endblock %}
-    </head>
-    
-    <body>
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
-        
-        {% block body %}{% endblock %}
-    </body>
+	<head>
+		<title>
+			{% block title %}Bienvenue !
+			{% endblock %}
+		</title>
+		{% block header %}
+			{{component('header')}}
+		{% endblock %}
+	</head>
+
+	<body>
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+		{% block topbar %}
+			{{ component('topbar') }}
+		{% endblock %}
+		<div class="page-header">
+			<h1 class="text-center">
+				{% block title_body %}
+					Bienvenue chez Safer
+				{% endblock %}
+			</h1>
+		</div>
+		<div class="container text-center">
+			{% block body %}{% endblock %}
+		</div>
+	</body>
 </html>

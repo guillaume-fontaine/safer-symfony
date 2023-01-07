@@ -1,0 +1,5 @@
+{% extends 'homepage/index.html.twig' %}
+
+{% block body %}
+	{{ component('biens_favoris', { bien : bien, favoris : favoris, routeRedirection : routeRedirection, isLinkImage : false}) }}
+{% endblock %}
