@@ -40,8 +40,6 @@ class HomepageController extends AbstractController
             //Ne devrait pas arriver car les liens de la topbar ne sont creer que si il existe des categories, mais dans le doute
             throw $this->createNotFoundException('Aucune categorie existante');
         }
-        
-        
 
         //<<PARTIE FORMULAIRE MULTICRITERE>>
         //par defaut chaque champ du formulaire aurait ete requis

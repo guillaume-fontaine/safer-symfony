@@ -35,6 +35,18 @@
             "migrations/.gitignore"
         ]
     },
+    "sensio/framework-extra-bundle": {
+        "version": "6.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.2",
+            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+        },
+        "files": [
+            "config/packages/sensio_framework_extra.yaml"
+        ]
+    },
     "symfony/console": {
         "version": "6.2",
         "recipe": {
@@ -125,6 +137,9 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/ux-twig-component": {
+        "version": "v2.6.1"
+    },
     "symfony/validator": {
         "version": "6.2",
         "recipe": {
@@ -137,11 +152,7 @@
             "config/packages/validator.yaml"
         ]
     },
-    "symfony/ux-twig-component": {
-    "version": "v2.6.1"
-    },
     "twig/extra-bundle": {
         "version": "v3.4.0"
     }
-
 }

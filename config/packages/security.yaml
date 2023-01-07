@@ -36,6 +36,7 @@ security:
     access_control:
         - { path: ^/admin/gestionAdmin, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin/biens, roles: ROLE_ADMIN } #Etant donne qu'il y aura sans doute un /biens qui affiche tout les biens pour le public je modifie de la sorte. Si tu as une meilleure idee go.
         - { path: ^/, roles: PUBLIC_ACCESS }
 
 when@test:
