@@ -4,6 +4,7 @@ namespace App\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Repository\CategoriesRepository;
 
 #[AsTwigComponent('topbar')]
 class TopbarComponent
@@ -11,9 +12,19 @@ class TopbarComponent
     public string $saferUrl;
     public string $favorisUrl;
 
-    public function __construct(UrlGeneratorInterface $router)
+    //Je suis le tuto ici : https://symfony.com/bundles/ux-twig-component/current/index.html#fetching-services
+    private CategoriesRepository $categoriesRepository;
+
+    public function __construct(UrlGeneratorInterface $router, CategoriesRepository $categoriesRepository)
     {
         $this->saferUrl = $router->generate('app_homepage');
         $this->favorisUrl = $router->generate('app_view_favoris');
+        $this->categoriesRepository = $categoriesRepository;
     }
+
+    public function getAllCategorie()
+    {
+        return $this->categoriesRepository->findAll();
+    }
+
 }
