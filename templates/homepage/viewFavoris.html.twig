@@ -1,0 +1,24 @@
+{% extends 'homepage/splitView.html.twig' %}
+
+{% block leftView %}
+				{% for bien in biens %}
+					{{ component('biens_favoris', { bien : bien, favoris : true, routeRedirection : routeRedirection, isLinkImage : true}) }}
+				{% endfor %}                
+{% endblock %}
+{% block rightView %}
+				<div class="sticky-top" style="top : 70px;">
+					<div class="card">
+						<h5 class="card-title">
+							Envoyer vos favoris par mail
+						</h5>
+						<div class="card-body">
+							{{ form_start(addFavorisForm) }}
+							{{ form_row(addFavorisForm.mail) }}
+							<button type="submit" class="btn btn-primary">Envoyer</button>
+							{{ form_end(addFavorisForm) }}
+						</div>
+					</div>
+				</div>
+                
+{% endblock %}
+

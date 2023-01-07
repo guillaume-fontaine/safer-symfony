@@ -1,9 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/form.html.twig' %}
 
-{% block title %}Séléctioner un administrateur à modifié{% endblock %}
-
-{% block body %}
-    <h1>Séléctioner un administrateur à modifié</h1>
+{% block form %}
 
     {{ form_start(selectEditAdminForm) }}
         {{ form_row(selectEditAdminForm.admin) }}

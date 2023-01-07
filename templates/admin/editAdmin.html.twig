@@ -1,9 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/form.html.twig' %}
 
-{% block title %}Modification{% endblock %}
+{% block form %}
 
-{% block body %}
-    <h1>Modification d'admin</h1>
 
     {{ form_start(editAdminForm) }}
         {{ form_row(editAdminForm.prenom) }}
