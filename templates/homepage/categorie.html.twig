@@ -3,7 +3,23 @@
 {% block title %}Biens{% endblock %}
 
 {% block body %}
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+                {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.prix_min, 'Prix minimum') }}
+                        {{ form_widget(form.prix_min, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_label(form.prix_max, 'Prix maximum') }}
+                        {{ form_widget(form.prix_max, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_label(form.localisation, 'Localisation') }}
+                        {{ form_widget(form.localisation, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_label(form.mot_clefs, 'Mots-clés') }}
+                        {{ form_widget(form.mot_clefs, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+
         {% for bien in biens %}
             {{ component('biens_favoris', { bien : bien, favoris : favoris, routeRedirection : routeRedirection, isLinkImage : true}) }}
         {% endfor %}
+
 {% endblock %}

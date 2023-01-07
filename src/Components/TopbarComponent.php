@@ -16,13 +16,13 @@ class TopbarComponent
     private UrlGeneratorInterface $router;
     public string $saferUrl;
     public string $favorisUrl;
-
     public function __construct(UrlGeneratorInterface $router, CategoriesRepository $categoriesRepository)
     {
         $this->categoriesRepository = $categoriesRepository;
         $this->router = $router;
         $this->saferUrl = $router->generate('app_homepage');
         $this->favorisUrl = $router->generate('app_view_favoris');
+        $this->categoriesRepository = $categoriesRepository;
     }
 
     public function getAllCategorie()

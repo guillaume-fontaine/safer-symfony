@@ -14,6 +14,9 @@ use App\Entity\Favoriser;
 use App\Form\AddFavorisType;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class HomepageController extends AbstractController
 {
@@ -157,12 +160,29 @@ class HomepageController extends AbstractController
             //Ne devrait pas arriver car les liens de la topbar ne sont creer que si il existe des categories, mais dans le doute
             throw $this->createNotFoundException('Aucune categorie existante');
         }
-        $biens = $doctrine->getRepository(Biens::class)->allGoodsfromCategorie($categorie->getId());
+        
+        $biens = $categorie->getBiens();
+
+        $form = $this->createFormBuilder() 
+        ->add('prix_min', NumberType::class, ['required' => false])//aurait ete non mappe
+        ->add('prix_max', NumberType::class, ['required' => false])//aurait ete non mappe
+        ->add('localisation', TextType::class, ['required' => false])//aurait ete mappe
+        ->add('mot_clefs', TextType::class, ['required' => false]) //aurait ete non mappe, normalement c'est motclefS mais il faudrait gerer le querybuilder avec les where
+        ->add('RECHERCHER', SubmitType::class)
+        ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $formdata = $form->getData(); //Renvoie un tableau ! A savoir que avec un objet le get data n'aurait pas renvoye les morceau du form non mappe et aurait du etre recuperer individuellement
+            $biens = $doctrine->getRepository(Biens::class)->goodsfromIdandForm($id,$formdata);
+        }
+
         return $this->render('homepage/categorie.html.twig', [
             'biens' => $biens,
             'categorie' => $categorie,
             'favoris' => $this->favoris,
-            'routeRedirection' => rawurlencode($request->getRequestUri())
+            'routeRedirection' => rawurlencode($request->getRequestUri()),
+            'form' => $form,
         ]);
     }
 }
+
