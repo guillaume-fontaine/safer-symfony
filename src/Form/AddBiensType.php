@@ -6,8 +6,10 @@ use App\Entity\Biens;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Categories;
 
-class BiensType extends AbstractType
+class AddBiensType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -19,7 +21,11 @@ class BiensType extends AbstractType
             ->add('intitule')
             ->add('descriptif')
             ->add('reference')
-            ->add('categorie')
+            ->add('categories', EntityType::class, [
+                'class' => Categories::class,
+                'mapped' => false,
+                'choice_label' => 'libelle',
+            ])
         ;
     }
 

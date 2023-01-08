@@ -1,0 +1,31 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block body %}
+<div class="card mx-auto" style="width: 50rem;">
+	<div class="card-body">
+        {% block form %}
+        <div class="row">
+            <div class="col-sm-4"> 
+                {{ form_start(listBienform) }}
+                    {{ form_row(listBienform.biens, {'attr': {'onchange': 'this.form.submit()'}}) }}
+                {{ form_end(listBienform) }}
+            </div>
+            <div class="col-sm-8">
+            {{ form_start(editBienform) }}
+                {{ form_row(editBienform.reference) }}
+                {{ form_row(editBienform.intitule) }}
+                {{ form_row(editBienform.categories) }}
+                {{ form_row(editBienform.descriptif) }}
+                {{ form_row(editBienform.prix) }}
+                {{ form_row(editBienform.surface) }}
+                {{ form_row(editBienform.type) }}
+                {{ form_row(editBienform.localisation) }}
+                {{ form_row(editBienform.modifier) }}
+            {{ form_end(editBienform) }}
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+</div>
+
+{% endblock %}
