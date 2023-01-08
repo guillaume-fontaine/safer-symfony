@@ -36,5 +36,13 @@ final class AdminTopbarComponent
         return $array;
     }
 
+    public function getDropdownBiens()
+    {
+        $array = ["Ajouter un Bien" => "app_biens_new",
+                  "Modifier un Bien" => "app_biens_edit",
+                  "Supprimer un Bien" => "app_biens_delete"];
+        return $array;
+    }
+
 }
 

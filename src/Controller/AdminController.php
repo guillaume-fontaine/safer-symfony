@@ -6,13 +6,19 @@ use App\Entity\Favoris;
 use App\Entity\Admin;
 use App\Entity\Categories;
 use App\Entity\Favoriser;
+use App\Entity\Biens;
+use App\Repository\BiensRepository;
 use App\Form\DeleteAdminType;
 use App\Form\DeleteFavorisType;
+use App\Form\DeleteBiensType;
 use App\Form\SelectAdminType;
 use App\Form\EditAdminType;
 use App\Form\EditCategoriesType;
+use App\Form\EditBiensType;
+use App\Form\ListBiensType;
 use App\Form\AddCategoriesType;
 use App\Form\AddAdminType;
+use App\Form\AddBiensType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -214,4 +220,86 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/gestionBiens/Ajout', name: 'app_biens_new')]
+    public function new(Request $request, BiensRepository $biensRepository): Response
+    {
+        $bien = new Biens();
+        $form = $this->createForm(AddBiensType::class, $bien);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $bien = $form->getData();
+            $bien->setCategorie($form->get('categories')->getData());
+            $biensRepository->save($bien, true);
+            $this->addFlash('success', 'Le bien "'.$bien->getIntitule().'"a été ajouté');
+            return $this->redirectToRoute('app_biens_new', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/addBien.html.twig', [
+            'addBienForm' => $form,
+            'title' => "Ajouter un Bien"
+        ]);
+    }
+
+    #[Route('/gestionBiens/edit', name: 'app_biens_edit')]
+    public function edit(Request $request, BiensRepository $biensRepository): Response
+    {
+        $bien = new Biens();
+        $formlist = $this->createForm(listBiensType::class, $bien);
+        $form = $this->createForm(EditBiensType::class, $bien);
+        $formlist->handleRequest($request);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid() && $form->get('modifier')->isClicked())
+        {
+            $bienmodif = $form->getData();
+            $bien=$biensRepository->find($form->get('id')->getData());
+
+            $bien->setPrix($bienmodif->getPrix());
+            $bien->setSurface($bienmodif->getSurface());
+            $bien->setType($bienmodif->getType());
+            $bien->setLocalisation($bienmodif->getLocalisation());
+            $bien->setIntitule($bienmodif->getIntitule());
+            $bien->setDescriptif($bienmodif->getDescriptif());
+            $bien->setReference($bienmodif->getReference());
+            $bien->setCategorie($form->get('categories')->getData());
+
+            $biensRepository->save($bien, true);
+            $this->addFlash('success', 'Le bien "'.$bien->getIntitule().'"a été modifié');
+            return $this->redirectToRoute('app_biens_edit', [], Response::HTTP_SEE_OTHER);
+        }
+        
+        if ($formlist->isSubmitted() && $formlist->isValid()) {
+            $bien= $formlist->get('biens')->getData();
+            $form = $this->createForm(EditBiensType::class, $bien);
+            $form->get('id')->setData($bien->getId());
+        }
+
+        return $this->renderForm('admin/editBien.html.twig', [
+            'listBienform' => $formlist,
+            'editBienform' => $form,
+            'title' => "Modifier un Bien"
+        ]);
+    }
+
+    #[Route('/gestionBiens/delete', name: 'app_biens_delete')]
+    public function delete(Request $request, ManagerRegistry $doctrine, BiensRepository $biensRepository): Response
+    {
+        $bien = new Biens();
+        $form = $this->createForm(DeleteBiensType::class, $bien);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $bien = $form->get('biens')->getData();
+            $bien = $doctrine->getRepository(Biens::class)->find($bien->getId());
+            $biensRepository->remove($bien, true);
+            $this->addFlash('success', 'Le bien "'.$bien->getIntitule().'"a été supprimé');
+            $this->redirectToRoute('app_biens_delete', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/deleteBien.html.twig',[
+            'deleteBienForm' => $form,
+            'title' => "Supprimer un Bien"
+        ]);
+    }
 }
