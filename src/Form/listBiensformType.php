@@ -18,6 +18,7 @@ class listBiensType extends AbstractType
                 'class' => biens::class,
                 'mapped' => false,
                 'choice_label' => 'intitule',
+                'placeholder' => 'Choissisez un bien'
             ]);
     }
 

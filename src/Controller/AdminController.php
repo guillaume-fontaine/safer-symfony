@@ -232,7 +232,7 @@ class AdminController extends AbstractController
             $bien->setCategorie($form->get('categories')->getData());
             $biensRepository->save($bien, true);
             $this->addFlash('success', 'Le bien "'.$bien->getIntitule().'"a été ajouté');
-            return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_biens_new', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/addBien.html.twig', [
@@ -266,7 +266,7 @@ class AdminController extends AbstractController
 
             $biensRepository->save($bien, true);
             $this->addFlash('success', 'Le bien "'.$bien->getIntitule().'"a été modifié');
-            return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_biens_edit', [], Response::HTTP_SEE_OTHER);
         }
         
         if ($formlist->isSubmitted() && $formlist->isValid()) {
@@ -294,7 +294,7 @@ class AdminController extends AbstractController
             $bien = $doctrine->getRepository(Biens::class)->find($bien->getId());
             $biensRepository->remove($bien, true);
             $this->addFlash('success', 'Le bien "'.$bien->getIntitule().'"a été supprimé');
-            $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
+            $this->redirectToRoute('app_biens_delete', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/deleteBien.html.twig',[
