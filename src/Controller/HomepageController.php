@@ -11,12 +11,14 @@ use App\Entity\Biens;
 use App\Entity\Categories;
 use App\Entity\Favoris;
 use App\Entity\Favoriser;
+use App\Entity\Contact;
 use App\Form\AddFavorisType;
+use App\Form\ContactFormType;
+use App\Form\SearchBiensCriteriaType;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class HomepageController extends AbstractController
 {
@@ -96,7 +98,7 @@ class HomepageController extends AbstractController
 
     
     #[Route('/voirfavoris', name: 'app_view_favoris')]
-    public function voirLesFavoris(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
+    public function voirLesFavoris(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $this->setupFavoris($request);
         $favoris = new Favoris();
@@ -104,6 +106,17 @@ class HomepageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $email = (new TemplatedEmail())
+            ->from('saferprojectur1@gmail.com')
+            ->to($favoris->getMail())
+            ->subject('Vos biens favoris')
+            ->htmlTemplate('emails/favoris.html.twig')
+            ->context([
+                'favoris' => $this->favoris,
+            ]);
+
+        $mailer->send($email);
 
             $favoris->setDate(new \DateTime());
             $entityManager->persist($favoris);
@@ -161,12 +174,7 @@ class HomepageController extends AbstractController
             throw $this->createNotFoundException('Aucune categorie existante');
         }
         $biens = $categorie->getBiens();
-        $form = $this->createFormBuilder() 
-        ->add('prix_min', NumberType::class, ['required' => false])//aurait ete non mappe
-        ->add('prix_max', NumberType::class, ['required' => false])//aurait ete non mappe
-        ->add('localisation', TextType::class, ['required' => false])//aurait ete mappe
-        ->add('mot_clefs', TextType::class, ['required' => false])
-        ->getForm();
+        $form = $this->createForm(SearchBiensCriteriaType::class);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $formdata = $form->getData(); //Renvoie un tableau ! A savoir que avec un objet le get data n'aurait pas renvoye les morceau du form non mappe et aurait du etre recuperer individuellement
@@ -179,6 +187,28 @@ class HomepageController extends AbstractController
             'favoris' => $this->favoris,
             'routeRedirection' => rawurlencode($request->getRequestUri()),
             'form' => $form,
+        ]);
+    }
+
+    
+    #[Route('/formulaireContact', name: 'app_form_contact')]
+    public function formulaireContact(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
+    {
+        $contact = new Contact();
+        $form = $this->createForm(ContactFormType::class, $contact);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $contact->setDate(new \DateTime());
+            $entityManager->persist($contact);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'Votre demande a été receptioné.');
+            return $this->redirectToRoute('app_homepage');
+        }
+
+        return $this->render('homepage/contactForm.html.twig', [
+            'formContact' =>  $form->createView(),
         ]);
     }
 }

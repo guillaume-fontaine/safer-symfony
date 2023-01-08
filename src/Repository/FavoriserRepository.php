@@ -49,6 +49,23 @@ class FavoriserRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getBiensFavoriserThisDay(){
+        return $this->createQueryBuilder('f')
+        ->select('count(f.biens) as nbBien , b as biens')
+            ->from('App\Entity\Favoris', "g")
+            ->from('App\Entity\Biens', "b")
+            ->andWhere('g.date = :val')
+            ->andWhere('g.id = f.favoris')
+            ->andWhere('b.id = f.biens')
+            ->setParameter('val', date('Y-m-d'))
+            ->groupBy('b')
+            ->orderBy('count(f.biens)', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Favoriser[] Returns an array of Favoriser objects
 //     */

@@ -14,6 +14,7 @@ class TopbarComponent
     //Je suis le tuto ici : https://symfony.com/bundles/ux-twig-component/current/index.html#fetching-services
     private CategoriesRepository $categoriesRepository;
     private UrlGeneratorInterface $router;
+    public string $contactUrl;
     public string $saferUrl;
     public string $favorisUrl;
     public function __construct(UrlGeneratorInterface $router, CategoriesRepository $categoriesRepository)
@@ -22,7 +23,7 @@ class TopbarComponent
         $this->router = $router;
         $this->saferUrl = $router->generate('app_homepage');
         $this->favorisUrl = $router->generate('app_view_favoris');
-        $this->categoriesRepository = $categoriesRepository;
+        $this->contactUrl = $router->generate('app_form_contact');
     }
 
     public function getAllCategorie()
