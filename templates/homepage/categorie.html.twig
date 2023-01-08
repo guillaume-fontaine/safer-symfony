@@ -2,7 +2,7 @@
 
 {% block leftView %}
 	{% for bien in biens %}
-		{{ component('biens_favoris', { bien : bien, favoris : favoris, routeRedirection : routeRedirection, isLinkImage : true}) }}
+		{{ component('biens', { bien : bien, favoris : favoris, routeRedirection : routeRedirection, isLinkImage : true}) }}
 	{% endfor %}
 {% endblock %}
 {% block rightView %}

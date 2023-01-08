@@ -4,7 +4,7 @@
 		<div class="container text-center">
         <h1>Voici vos favoris</h1>
 				{% for bien in favoris %}
-{{ component('biens_favoris', { bien : bien, isMail : true, email : email}) }}
+{{ component('biens', { bien : bien, isMail : true, email : email}) }}
 				{% endfor %}   
                 </div> 
                 

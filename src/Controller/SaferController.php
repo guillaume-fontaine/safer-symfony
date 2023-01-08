@@ -19,8 +19,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class HomepageController extends AbstractController
+class SaferController extends AbstractController
 {
 
     protected $session;
@@ -31,6 +32,8 @@ class HomepageController extends AbstractController
 
     }
 
+
+    //Fonction qui sert généré les favoris stocké en session
     private function setupFavoris(?Request $request)
     {
         if (is_null($request)) {
@@ -46,11 +49,13 @@ class HomepageController extends AbstractController
         }
     }
 
+    //Stock les favoris en session
     private function finishFavoris()
     {
         $this->session->set('favoris', $this->favoris);
     }
 
+    //Page par default
     #[Route('/', name: 'app_homepage')]
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -61,6 +66,7 @@ class HomepageController extends AbstractController
         ]);
     }
 
+    //Page qui affiche un bien donné en paramètre
     #[Route('/voirunbien/{id}', name: 'app_view_bien')]
     public function voirUnBien(Request $request, Biens $bien): Response
     {
@@ -75,6 +81,7 @@ class HomepageController extends AbstractController
         ]);
     }
 
+    //Fonction qui renvoie true si le bien en parametre est stocké en favoris
     private function foundBienInFavoris(Biens $biens)
     {
         foreach ($this->favoris as $bienFavoris) {
@@ -85,7 +92,7 @@ class HomepageController extends AbstractController
         return false;
     }
 
-
+    //Fonction qui enleve des favoris un bien en parametre
     private function removeBienInFavoris(Biens $biens)
     {
         foreach ($this->favoris as $bienFavoris) {
@@ -96,7 +103,7 @@ class HomepageController extends AbstractController
         return false;
     }
 
-    
+    //Fonction qui affiche les favoris et qui permet de les envoyer par mail
     #[Route('/voirfavoris', name: 'app_view_favoris')]
     public function voirLesFavoris(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
@@ -140,31 +147,38 @@ class HomepageController extends AbstractController
             'addFavorisForm' => $form->createView(),
         ]);
     }
-
     
-    #[Route('/removefromfavoris/{id}', name: 'app_remove_from_favoris')]
+    //Fonction utilisé par le site pour enlever un bien en favoris (utilisé avec ajax)
+    #[Route('/removefavoris/{id}', name: 'app_remove_favoris')]
     public function enleverUnFavoris(Request $request, Biens $bien): Response
     {
         $this->setupFavoris(null);
         $this->removeBienInFavoris($bien);
         $this->finishFavoris();
-        $this->addFlash('success', 'Le bien ' . $bien->getIntitule() . ' a été retiré de la listes de favoris.');
-
-        return $this->redirect($request->query->get('routeRedirection'));
+        $response = new JsonResponse();
+        $response->setData([
+            'message' => 'Le bien ' . $bien->getIntitule() . ' a été retiré de la liste des favoris.',
+        ]);
+        return $response;
     }
 
-    
-    #[Route('/addfromfavoris/{id}', name: 'app_add_from_favoris')]
-    public function ajouterUnFavoris(Request $request, Biens $bien): Response
+
+    //Fonction utilisé par le site pour ajouter un bien en favoris (utilisé avec ajax)    
+    #[Route('/addfavoris/{id}', name: 'app_add_favoris')]
+    public function ajouternFavoris(Request $request, Biens $bien): Response
     {
         $this->setupFavoris(null);
         array_push($this->favoris, $bien);
         $this->finishFavoris();
-        $this->addFlash('success', 'Le bien ' . $bien->getIntitule() . ' a été ajouté de la liste des favoris.');
-        
-        return $this->redirect($request->query->get('routeRedirection'));
+        $response = new JsonResponse();
+        $response->setData([
+            'message' => 'Le bien ' . $bien->getIntitule() . ' a été ajouté de la liste des favoris.',
+        ]);
+        return $response;
+        //return $this->redirect($request->query->get('routeRedirection'));
     }
 
+    //Fonction qui affiche les biens d"une catégorie donner en parametre
     #[Route('/categorie/{id}', name: 'app_categorie')]
     public function categorie(Request $request, ManagerRegistry $doctrine, Categories $categorie): Response
     {    
@@ -190,7 +204,7 @@ class HomepageController extends AbstractController
         ]);
     }
 
-    
+    //fonction qui affiche un formulaire de contact
     #[Route('/formulaireContact', name: 'app_form_contact')]
     public function formulaireContact(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
     {

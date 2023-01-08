@@ -3,18 +3,12 @@
 namespace App\Twig\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsTwigComponent('admin_topbar')]
 final class AdminTopbarComponent
 {
     
-    public string $saferUrl;
-
-    public function __construct(UrlGeneratorInterface $router)
-    {
-        $this->saferUrl = $router->generate('app_admin');
-    }
+    public string $saferUrl = 'app_admin';
 
     public function getDropdownCategorie()
     {

@@ -27,9 +27,36 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminController extends AbstractController
 {
+
+    //Fonction pour se connecter en admin
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+    
+    //Fonction pour se deconnecter du mode admin
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout(): void
+    {
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    //Fonction par defaut du mode admin qui affiche les stats du site
     #[Route('/admin/panneau', name: 'app_admin')]
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -46,6 +73,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    //Fonction qui permet de supprimer un administrateur
     #[Route('/admin/gestionAdmin/suppression', name: 'app_supprimer_admin')]
     public function suppressionAdmin(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -70,6 +98,7 @@ class AdminController extends AbstractController
     }
 
 
+    //Fonction qui permet de choisir un administrateur a édité
     #[Route('/admin/gestionAdmin/modification', name: 'app_selectioner_modifier_admin')]
     public function selectionModificationAdmin(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -89,6 +118,8 @@ class AdminController extends AbstractController
         ]);
     }
 
+    
+    //Fonction qui permet de supprimer un administrateur donné parametre
     #[Route('/admin/gestionAdmin/modification/{id}', name: 'app_modifier_admin')]
     public function modificationAdmin(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, Admin $user): Response
     {
@@ -120,6 +151,7 @@ class AdminController extends AbstractController
         ]);
     }
     
+    //Fonction qui permet de modifier une catégorie
     #[Route('/admin/gestionCategories/modification', name: 'app_modifier_categories')]
     public function modificationCategories(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -149,6 +181,8 @@ class AdminController extends AbstractController
         ]);
     }
     
+    
+    //Fonction qui permet d'ajouter une catégorie
     #[Route('/admin/gestionCategories/ajout', name: 'app_add_categories')]
     public function addCategories(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -172,6 +206,8 @@ class AdminController extends AbstractController
         ]);
     }
 
+    
+    //Fonction qui permet d'enregister un nouveau administrateur
     #[Route('/admin/gestionAdmin/ajout', name: 'app_add_admin')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -203,6 +239,8 @@ class AdminController extends AbstractController
         ]);
     }
 
+    
+    //Fonction qui permet de supprimer les favoris
     #[Route('/admin/gestionFavoris/suppression', name: 'app_delete_favoris')]
     public function suppressionFavoris(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
     {
@@ -229,7 +267,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/gestionBiens/Ajout', name: 'app_biens_new')]
+    
+    //Fonction qui permet d'ajouter un biens
+    #[Route('/admin/gestionBiens/Ajout', name: 'app_biens_new')]
     public function new(Request $request, BiensRepository $biensRepository): Response
     {
         $bien = new Biens();
@@ -250,11 +290,12 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/gestionBiens/edit', name: 'app_biens_edit')]
+    //Fonction qui permet d'editer un biens
+    #[Route('/admin/gestionBiens/modification', name: 'app_biens_edit')]
     public function edit(Request $request, BiensRepository $biensRepository): Response
     {
         $bien = new Biens();
-        $formlist = $this->createForm(listBiensType::class, $bien);
+        $formlist = $this->createForm(ListBiensType::class, $bien);
         $form = $this->createForm(EditBiensType::class, $bien);
         $formlist->handleRequest($request);
         $form->handleRequest($request);
@@ -291,7 +332,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/gestionBiens/delete', name: 'app_biens_delete')]
+    
+    //Fonction qui permet de supprimer un biens
+    #[Route('/admin/gestionBiens/suppression', name: 'app_biens_delete')]
     public function delete(Request $request, ManagerRegistry $doctrine, BiensRepository $biensRepository): Response
     {
         $bien = new Biens();
