@@ -322,9 +322,11 @@ class AdminController extends AbstractController
         if ($formlist->isSubmitted() && $formlist->isValid()) {
             $bien= $formlist->get('biens')->getData();
             $form = $this->createForm(EditBiensType::class, $bien);
+            
+        }
+        if(!is_null($form->get('id')->getData())){
             $form->get('id')->setData($bien->getId());
         }
-
         return $this->renderForm('admin/editBien.html.twig', [
             'listBienform' => $formlist,
             'editBienform' => $form,
