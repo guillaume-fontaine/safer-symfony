@@ -160,9 +160,7 @@ class HomepageController extends AbstractController
             //Ne devrait pas arriver car les liens de la topbar ne sont creer que si il existe des categories, mais dans le doute
             throw $this->createNotFoundException('Aucune categorie existante');
         }
-        
         $biens = $categorie->getBiens();
-
         $form = $this->createFormBuilder() 
         ->add('prix_min', NumberType::class, ['required' => false])//aurait ete non mappe
         ->add('prix_max', NumberType::class, ['required' => false])//aurait ete non mappe
