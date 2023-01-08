@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Safer{% endblock %}
+{% block body %}
+    <p class="text-justify"> Bienvenue chez Safer, l'entreprise de ventes, ou locations de biens agricoles qui répond toujours à l'heure</p>
+	<div class="row align-items-start">
+		{% for bien in biens %}
+			<div class="col">
+				<div class="card">
+					<div class="card-header">
+						{{bien.intitule}}
+					</div>
+					<img src="{{image_if("/image/#{bien.reference}.jpg")}}" class="card-img" alt="...">
+					<div class="card-body">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">{{bien.type}}</li>
+							<li class="list-group-item">Catégorie :
+								{{bien.categorie.libelle}}</li>
+							<li class="list-group-item">Localisation :
+								{{bien.localisation}}</li>
+							<li class="list-group-item">Surface :
+								{{bien.surface}}
+								ha</li>
+							<li class="list-group-item">
+								{% if bien.prix < 0 %}
+									Prix indisponible pour le moment
+								{% else %}
+									Prix :
+									{{bien.prix}}€
+								{% endif %}
+							</li>
+							<li class="list-group-item">
+								<p class="font-weight-bold">
+									Description :
+								</p>
+								<p>{{bien.descriptif}}</p>
+							</li>
+						</ul>
+					</div>
+					<div class="card-footer">
+						<a href="{{ path('app_view_bien', {id: bien.id}) }}" class="btn btn-primary stretched-link">Voir le bien</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

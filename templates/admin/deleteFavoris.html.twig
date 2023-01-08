@@ -1,0 +1,9 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block form %}
+
+    {{ form_start(deleteFavorisForm) }}
+        {{ form_row(deleteFavorisForm.favoris) }}
+        <button type="submit" class="btn">Supprimer</button>
+    {{ form_end(deleteFavorisForm) }}
+{% endblock %}

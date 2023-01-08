@@ -1,0 +1,9 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block form %}
+
+    {{ form_start(addCategoriesForm) }}
+        {{ form_row(addCategoriesForm.libelle) }}
+        <button type="submit" class="btn">Ajouter</button>
+    {{ form_end(addCategoriesForm) }}
+{% endblock %}

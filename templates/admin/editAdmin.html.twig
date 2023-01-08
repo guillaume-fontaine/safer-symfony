@@ -1,0 +1,16 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block form %}
+
+
+    {{ form_start(editAdminForm) }}
+        {{ form_row(editAdminForm.prenom) }}
+        {{ form_row(editAdminForm.nom) }}
+        {{ form_row(editAdminForm.email) }}
+        {{ form_row(editAdminForm.plainPassword, {
+            label: 'Password'
+        }) }}
+
+        <button type="submit" class="btn">Modifier</button>
+    {{ form_end(editAdminForm) }}
+{% endblock %}

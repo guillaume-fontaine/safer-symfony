@@ -1,0 +1,10 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block form %}
+
+
+    {{ form_start(deleteAdminForm) }}
+        {{ form_row(deleteAdminForm.admin) }}
+        <button type="submit" class="btn">Supprimer</button>
+    {{ form_end(deleteAdminForm) }}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block form %}
+
+    {{ form_start(selectEditAdminForm) }}
+        {{ form_row(selectEditAdminForm.admin) }}
+        <button type="submit" class="btn">Suivant</button>
+    {{ form_end(selectEditAdminForm) }}
+{% endblock %}

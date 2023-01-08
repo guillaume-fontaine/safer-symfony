@@ -1,0 +1,17 @@
+{% extends 'homepage/index.html.twig' %}
+
+{% block body %}
+
+					<div class="card">
+						<h5 class="card-title">
+							Prise de contact
+						</h5>
+						<div class="card-body">
+							{{ form_start(formContact) }}
+							{{ form_row(formContact.email) }}
+							{{ form_row(formContact.description) }}
+							<button type="submit" class="btn btn-primary">Envoyer</button>
+							{{ form_end(formContact) }}
+						</div>
+					</div>
+{% endblock %}

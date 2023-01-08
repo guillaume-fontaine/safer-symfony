@@ -1,0 +1,11 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block form %}
+
+
+    {{ form_start(editCategoriesForm) }}
+        {{ form_row(editCategoriesForm.categories) }}
+        {{ form_row(editCategoriesForm.editLibelle) }}
+        <button type="submit" class="btn">Modifier</button>
+    {{ form_end(editCategoriesForm) }}
+{% endblock %}

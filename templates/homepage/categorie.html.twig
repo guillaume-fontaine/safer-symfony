@@ -1,0 +1,26 @@
+{% extends 'homepage/splitView.html.twig' %}
+
+{% block leftView %}
+	{% for bien in biens %}
+		{{ component('biens', { bien : bien, favoris : favoris, routeRedirection : routeRedirection, isLinkImage : true}) }}
+	{% endfor %}
+{% endblock %}
+{% block rightView %}
+	<div class="sticky-top" style="top : 70px;">
+		<div class="card">
+			<h5 class="card-title">
+				Rechercher un biens avec des filtres
+			</h5>
+			<div class="card-body">
+				{{ form_start(form) }}
+				{{ form_row(form.prix_min) }}
+				{{ form_row(form.prix_max) }}
+				{{ form_row(form.localisation) }}
+				{{ form_row(form.mot_clefs) }}
+				<button type="submit" class="btn btn-primary">Rechercher</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
