@@ -16,7 +16,7 @@ use App\Form\SelectAdminType;
 use App\Form\EditAdminType;
 use App\Form\EditCategoriesType;
 use App\Form\EditBiensType;
-use App\Form\ListBiensType;
+use App\Form\ListBiensformType;
 use App\Form\AddCategoriesType;
 use App\Form\AddAdminType;
 use App\Form\AddBiensType;
@@ -254,7 +254,7 @@ class AdminController extends AbstractController
     public function edit(Request $request, BiensRepository $biensRepository): Response
     {
         $bien = new Biens();
-        $formlist = $this->createForm(listBiensType::class, $bien);
+        $formlist = $this->createForm(listBiensformType::class, $bien);
         $form = $this->createForm(EditBiensType::class, $bien);
         $formlist->handleRequest($request);
         $form->handleRequest($request);
