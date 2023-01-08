@@ -1,0 +1,17 @@
+{% extends 'admin/form.html.twig' %}
+
+{% block form %}
+    {{ form_row(addBienForm.reference) }}
+	{{ form_row(addBienForm.intitule) }}
+	{{ form_row(addBienForm.categories) }}
+	{{ form_row(addBienForm.descriptif) }}
+	{{ form_row(addBienForm.prix) }}
+    {{ form_row(addBienForm.surface) }}
+    {{ form_row(addBienForm.type) }}
+    {{ form_row(addBienForm.localisation) }}
+
+	<button type="submit" class="btn">Ajouter</button>
+	{{ form_end(addBienForm) }}
+{% endblock %}
+
+

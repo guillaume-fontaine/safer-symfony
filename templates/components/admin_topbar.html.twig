@@ -22,6 +22,18 @@
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Biens
+					</a>
+					<ul class="dropdown-menu">
+						{% for libelle, route_name  in this.dropdownBiens %}
+							<li>
+								<a class="dropdown-item" href="{{ path(route_name) }}">{{libelle}}</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						Administrateur
 					</a>
 					<ul class="dropdown-menu">
