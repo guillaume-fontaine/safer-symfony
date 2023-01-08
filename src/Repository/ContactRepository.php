@@ -39,6 +39,16 @@ class ContactRepository extends ServiceEntityRepository
         }
     }
 
+    public function getNumberOfContactThisDay(){
+        return $this->createQueryBuilder('c')
+            ->select('count(c)')
+            ->andWhere('c.date = :val')
+            ->setParameter('val', date('Y-m-d'))
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
 //    /**
 //     * @return Contact[] Returns an array of Contact objects
 //     */

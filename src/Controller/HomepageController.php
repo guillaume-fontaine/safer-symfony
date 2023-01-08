@@ -17,6 +17,8 @@ use App\Form\ContactFormType;
 use App\Form\SearchBiensCriteriaType;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class HomepageController extends AbstractController
 {
@@ -96,7 +98,7 @@ class HomepageController extends AbstractController
 
     
     #[Route('/voirfavoris', name: 'app_view_favoris')]
-    public function voirLesFavoris(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
+    public function voirLesFavoris(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $this->setupFavoris($request);
         $favoris = new Favoris();
@@ -104,6 +106,17 @@ class HomepageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $email = (new TemplatedEmail())
+            ->from('saferprojectur1@gmail.com')
+            ->to($favoris->getMail())
+            ->subject('Vos biens favoris')
+            ->htmlTemplate('emails/favoris.html.twig')
+            ->context([
+                'favoris' => $this->favoris,
+            ]);
+
+        $mailer->send($email);
 
             $favoris->setDate(new \DateTime());
             $entityManager->persist($favoris);
@@ -188,6 +201,7 @@ class HomepageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $contact->setDate(new \DateTime());
             $entityManager->persist($contact);
             $entityManager->flush();
             

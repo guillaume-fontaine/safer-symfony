@@ -38,6 +38,16 @@ class FavorisRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
+    public function getNumberOfFavorisThisDay(){
+        return $this->createQueryBuilder('f')
+            ->select('count(f)')
+            ->andWhere('f.date = :val')
+            ->setParameter('val', date('Y-m-d'))
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 
 //    /**
 //     * @return Favoris[] Returns an array of Favoris objects

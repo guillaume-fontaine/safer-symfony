@@ -6,6 +6,7 @@ use App\Entity\Favoris;
 use App\Entity\Admin;
 use App\Entity\Categories;
 use App\Entity\Favoriser;
+use App\Entity\Contact;
 use App\Form\DeleteAdminType;
 use App\Form\DeleteFavorisType;
 use App\Form\SelectAdminType;
@@ -23,11 +24,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    #[Route('/admin/panel', name: 'app_admin')]
-    public function index(): Response
+    #[Route('/admin/panneau', name: 'app_admin')]
+    public function index(ManagerRegistry $doctrine): Response
     {
+        
+        $contact = $doctrine->getRepository(Contact::class)->getNumberOfContactThisDay();
+        $favoris = $doctrine->getRepository(Favoris::class)->getNumberOfFavorisThisDay();
+        $top = $doctrine->getRepository(Favoriser::class)->getBiensFavoriserThisDay();        
+
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'AdminController',
+            'top' => $top,
+            'favoris' => $favoris,
+            'contact' => $contact,
         ]);
     }
 

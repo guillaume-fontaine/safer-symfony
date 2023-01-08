@@ -12,9 +12,12 @@ final class BiensFavorisComponent
 {
 
     public Biens $bien;
-    public $favoris;
-    public bool $isLinkImage;
-    public string $routeRedirection;
+    public $favoris = false;
+    public ?string $routeRedirection = null;
+    public bool $isLinkImage = true;
+    public bool $isMail = false;
+    public bool $showFavoris = true;
+    public $email = null;
 
     public function __construct(public UrlGeneratorInterface $router)
     {
@@ -30,6 +33,15 @@ final class BiensFavorisComponent
     public function getDeleteUrl()
     {
         return $this->router->generate('app_remove_from_favoris', ['id' => $this->bien->getId(), 'routeRedirection' => $this->routeRedirection]);
+    }
+
+    #[ExposeInTemplate('show_favoris')]
+    public function isShowFavoris()
+    {
+        if($this->isMail){
+            return false;
+        }
+        return $this->showFavoris;
     }
 
     #[ExposeInTemplate('is_favoris')]
